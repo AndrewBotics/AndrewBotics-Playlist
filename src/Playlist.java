@@ -119,10 +119,10 @@ public class Playlist extends JFrame {
             setAudioBytes(SONGS.get(SONGINDEX));
             CURRENTSONG.start();
             updateUI(SONGS.get(SONGINDEX));
-            //addImage(SONGS.get(SONGINDEX).getImagePath());
+            addImage(SONGS.get(SONGINDEX).getImagePath());
             CURRENTSONG.addLineListener(e->{
                 if (e.getType()==LineEvent.Type.STOP && e.getFramePosition()==CURRENTSONG.getFrameLength()){
-                    System.out.println("FINISHED");
+                    //System.out.println("FINISHED");
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException ex) {
