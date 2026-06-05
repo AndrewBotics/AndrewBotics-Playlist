@@ -1,13 +1,13 @@
 Crazy F*cking Robot Body (Neuro), cfrb-neuro, neuro-default, Neuro
-Chinatown Blues (Neuro), chinatown-neuro, neuro-default, Neuro
+Chinatown Blues (Neuro & Vedal), chinatown-neuro, INHERIT, Neuro
 Cupid (Neuro), cupid-neuro, neuro-default, Neuro
 Dubidubidu (Neuro), dubidubidu-neuro, neuro-default, Neuro
 Gods (Neuro), gods-neuro, INHERIT, Neuro
 Life - Acoustic ver. (Neuro), life-acoustic-neuro, neuro-default, Neuro
 Magical Cure Love Shot (Neuro), magical-cure-neuro, INHERIT, Neuro
-Machine Love (Neuro), machine-love-neuro, neuro-default, Neuro
-Mesmerizer (Neuro), mesmerizer-neuro, neuro-default, Neuro
-Partners in Crime (Neuro), partners-neuro, neuro-default, Neuro
+Machine Love (Neuro), machine-love-neuro, INHERIT, Neuro
+Mesmerizer (Neuro JP), mesmerizer-neuro, neuro-default, Neuro
+Partners in Crime (Neuro), partners-neuro, INHERIT, Neuro
 Sad Machine x Something Comforting (Neuro), sad-mashup-neuro, INHERIT, Neuro
 Stupid Heart (Neuro), stupid-heart-neuro, neuro-default, Neuro
 Titanium (Neuro), titanium-neuro, neuro-default, Neuro
@@ -16,3 +16,34 @@ Virus (Neuro), virus-neuro, neuro-default, Neuro
 Voices in My Head (Neuro), voices-neuro, neuro-default, Neuro
 We Don't Talk Anymore (Neuro), dont-talk-neuro, neuro-default, Neuro
 world.execute(me) (Neuro), execute-neuro, neuro-default, Neuro
+Mesmerizer (Neuro & Bao), mesmerizer-neuro-bao, INHERIT, Neuro
+Boom, boom, INHERIT, Neuro
+Colorful Array, colorful-array, INHERIT, Neuro
+Life, life, INHERIT, Neuro
+Why Do I (Neuro & Will Stetson), why-do-i-neuro, INHERIT, Neuro
+Birdbrain, birdbrain, INHERIT, Vocaloid
+Cadmium Colors, cadmium-colors, INHERIT, Vocaloid
+Crash the Party, crash-the-party, INHERIT, Vocaloid
+Crashout, crashout, INHERIT, Vocaloid
+Daidaidaikirai (EN), daidaidaikirai, INHERIT, Vocaloid
+Dance Delightful, dance-delightful, INHERIT, Vocaloid
+Disconnect, disconnect, INHERIT, Vocaloid
+Fight Me Bite Me, fight-me-bite-me, INHERIT, Vocaloid
+Harlequin Contraption, harlequin, INHERIT, Vocaloid
+Machine Love (Jamie's Birthday ver.), machine-love-birthday, INHERIT, Vocaloid
+Machine Love, machine-love, INHERIT, Vocaloid
+Magical Girl Autopsy Report, magical-autopsy, INHERIT, Vocaloid
+Magical Cure Love Shot, magical-cure, INHERIT, Vocaloid
+Magical Girl Retirement Toast, magical-retirement, INHERIT, Vocaloid
+Minimum Rage, minimum-rage, INHERIT, Vocaloid
+Monitoring (Best Friend ver.), monitoring-bf, INHERIT, Vocaloid
+Overclocked, overclocked, INHERIT, Vocaloid
+Override, override, INHERIT, Vocaloid
+Ragebait, ragebait, INHERIT, Vocaloid
+Regret Rock, regret-rock, INHERIT, Vocaloid
+Rot For Clout, rot-for-clout, INHERIT, Vocaloid
+Say It, say-it, INHERIT, Vocaloid
+On the Way Down, way-down, INHERIT, Vocaloid
+Weathergirl, weathergirl, INHERIT, Vocaloid
+Why Do I, why-do-i, INHERIT, Vocaloid
+I Wish That I Could Fall, wish-fall, INHERIT, Vocaloid

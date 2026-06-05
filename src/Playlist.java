@@ -42,7 +42,7 @@ public class Playlist extends JFrame {
 
         populateSongs();
         shuffleSongs();
-        System.out.println(SONGS);
+        //System.out.println(SONGS);
 
         NOWPLAYING = new JLabel();
         NOWPLAYING.setFont(DEFAULTFONT);
