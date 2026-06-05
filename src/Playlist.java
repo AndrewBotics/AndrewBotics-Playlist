@@ -4,6 +4,8 @@ import java.util.*;
 import javax.sound.sampled.*;
 import javax.swing.*;
 import org.jtransforms.fft.*;
+import java.awt.image.*;
+import javax.imageio.*;
 
 public class Playlist extends JFrame {
     public static void main(String[] args) throws IOException {
@@ -119,7 +121,6 @@ public class Playlist extends JFrame {
             setAudioBytes(SONGS.get(SONGINDEX));
             CURRENTSONG.start();
             updateUI(SONGS.get(SONGINDEX));
-            addImage(SONGS.get(SONGINDEX).getImagePath());
             CURRENTSONG.addLineListener(e->{
                 if (e.getType()==LineEvent.Type.STOP && e.getFramePosition()==CURRENTSONG.getFrameLength()){
                     //System.out.println("FINISHED");
@@ -149,24 +150,19 @@ public class Playlist extends JFrame {
     void shuffleSongs(){
         Collections.shuffle(SONGS);
     }
-    void addImage(String image){
-        int W = 225;
-        int H = 225;
-        ImageIcon fileIcon = new ImageIcon(image);
-        Image output = fileIcon.getImage().getScaledInstance(W, H, Image.SCALE_SMOOTH);
-        ImageIcon scaled = new ImageIcon(output);
-        JLabel imageLabel = new JLabel(scaled);
-        imageLabel.setBounds(25, 50, W, H);
-        add(imageLabel);
-    }
-    void updateUI(Song song){
-        int W = 225;
-        int H = 225;
-        ImageIcon fileIcon = new ImageIcon(song.imageFile);
-        Image output = fileIcon.getImage().getScaledInstance(W, H, Image.SCALE_SMOOTH);
-        ImageIcon scaled = new ImageIcon(output);
-        IMAGELABEL = new JLabel(scaled);
-        add(IMAGELABEL);
+    void updateUI(Song song) throws IOException{
+        int TARGET_SIZE = 225;
+        File imgFile = new File(song.getImagePath());
+        BufferedImage image = ImageIO.read(imgFile);
+        
+        int iw = image.getWidth();
+        int ih = image.getHeight();
+
+        int size = Math.min(iw, ih);
+        BufferedImage crop = image.getSubimage((iw-size)/2, (ih-size)/2, size, size);
+        Image finalImage = crop.getScaledInstance(TARGET_SIZE, TARGET_SIZE, Image.SCALE_SMOOTH);
+
+        IMAGELABEL.setIcon(new ImageIcon(finalImage));
         NOWPLAYING.setText("Now Playing: "+song.songName);
         NOWPLAYING.setBounds(10, 10, 500, 30);
         repaint();
@@ -174,14 +170,13 @@ public class Playlist extends JFrame {
     }
 
     public void setAudioBytes(Song song) throws Exception {
-        File curr = new File("Songs\\"+song.mediaFile);
+        File curr = new File(song.getMediaPath());
         AudioInputStream ais = AudioSystem.getAudioInputStream(curr);
         TITLEBYTES = ais.readAllBytes();
         //System.out.println(TITLEBYTES.length);
         ais.close();
     }
 
-    // Put this inside your Playlist class
     class VisualizerPanel extends JPanel {
         public VisualizerPanel() {
             setBounds(0, 350, 450, 200);
@@ -250,9 +245,7 @@ public class Playlist extends JFrame {
             
                 int apply = (int)(120*Math.log10(mag+1));
                 
-                if (apply>0) {
-                    g.drawRect(currX, currY-apply, width, apply);
-                }
+                if (apply>0) g.drawRect(currX, currY-apply, width, apply);
                 
                 currX += spacePerBar; 
             }

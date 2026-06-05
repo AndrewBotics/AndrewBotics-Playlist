@@ -11,7 +11,8 @@ public class Song {
     public Song(String songName, String mediaFile, String imageFile, String genre){
         this.songName = songName.trim();
         this.mediaFile = mediaFile.trim()+".wav";
-        this.imageFile = imageFile.trim()+".png";
+        if (imageFile.trim().equals("INHERIT")) this.imageFile = mediaFile.trim()+".png";
+        else this.imageFile = imageFile.trim()+".png";
         this.genre = genre.trim();
     }
 
@@ -25,6 +26,9 @@ public class Song {
 
     public String getImagePath() {
         return "Images\\"+imageFile;
+    }
+    public String getMediaPath() {
+        return "Songs\\"+mediaFile;
     }
     public String toString(){
         return mediaFile;
