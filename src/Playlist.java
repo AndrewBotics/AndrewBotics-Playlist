@@ -13,6 +13,7 @@ public class Playlist extends JFrame {
     }
     Font DEFAULTFONT = new Font("Comic Sans Ms", Font.PLAIN, 15);
     ArrayList<Song> SONGS;
+    ArrayList<Song> ACTIVESONGS = new ArrayList<>();
 
     int SONGINDEX = -1;
     Clip CURRENTSONG;
@@ -24,6 +25,9 @@ public class Playlist extends JFrame {
     JButton PLAY;
     JButton NEXTSONG;
     JButton PREVSONG;
+    JButton RESHUFFLE;
+    JCheckBox[] STIMBOXES;
+    String[] STIMS = new String[]{"Neuro", "Vocaloid", "League"};
 
     int IMAGESIZE = 225;
     byte[] TITLEBYTES;
@@ -41,8 +45,7 @@ public class Playlist extends JFrame {
         setLayout(null);
 
         populateSongs();
-        shuffleSongs();
-        //System.out.println(SONGS);
+        //System.out.println(ACTIVESONGS);
 
         NOWPLAYING = new JLabel();
         NOWPLAYING.setFont(DEFAULTFONT);
@@ -61,6 +64,12 @@ public class Playlist extends JFrame {
 
         PREVSONG = createButton("<", 40, 300, 50, BUTTONHEIGHT);
         PREVSONG.addActionListener(e -> backSong());
+
+        RESHUFFLE = createButton("RESHUFFLE", 275, 50, 125, BUTTONHEIGHT);
+        RESHUFFLE.addActionListener(e -> shuffleAndStart());
+
+        STIMBOXES = createCheckGroup(STIMS, 275, 100);
+
         
         VISPANEL = new VisualizerPanel();
         add(VISPANEL);
@@ -71,7 +80,7 @@ public class Playlist extends JFrame {
         });
         VISTIMER.start();
 
-        playNextSong();
+        shuffleAndStart();
 
         setVisible(true);
     }
@@ -87,6 +96,21 @@ public class Playlist extends JFrame {
         button.setFocusable(false); 
         return button;
     }
+    JCheckBox[] createCheckGroup(String[] options, int x, int y){
+        JCheckBox[] boxes = new JCheckBox[options.length];
+        for (int i = 0; i<options.length; i++){
+            boxes[i] = createCheckBox(options[i], x, y+(i*25));
+        }
+        return boxes;
+    }
+    JCheckBox createCheckBox(String text, int x, int y){
+        JCheckBox jcb = new JCheckBox(text);
+        jcb.setBounds(x, y, 100, 30);
+        jcb.setFont(DEFAULTFONT);
+        jcb.setForeground(Color.BLACK);
+        add(jcb);
+        return jcb;
+    }
     void nextSong(){
         CURRENTSONG.stop();
         CURRENTSONG.close();
@@ -96,7 +120,7 @@ public class Playlist extends JFrame {
     void backSong(){
         CURRENTSONG.stop();
         CURRENTSONG.close();
-        SONGINDEX = (SONGINDEX+SONGS.size()-2)%SONGS.size();
+        SONGINDEX = (SONGINDEX+ACTIVESONGS.size()-2)%ACTIVESONGS.size();
         playNextSong();
         PLAY.setText("PAUSE");
     }
@@ -116,11 +140,11 @@ public class Playlist extends JFrame {
     }
     void playNextSong() {
         try {
-            SONGINDEX = (SONGINDEX+1)%SONGS.size();
-            CURRENTSONG = SONGS.get(SONGINDEX).generateClip();
-            setAudioBytes(SONGS.get(SONGINDEX));
+            SONGINDEX = (SONGINDEX+1)%ACTIVESONGS.size();
+            CURRENTSONG = ACTIVESONGS.get(SONGINDEX).generateClip();
+            setAudioBytes(ACTIVESONGS.get(SONGINDEX));
             CURRENTSONG.start();
-            updateUI(SONGS.get(SONGINDEX));
+            updateUI(ACTIVESONGS.get(SONGINDEX));
             CURRENTSONG.addLineListener(e->{
                 if (e.getType()==LineEvent.Type.STOP && e.getFramePosition()==CURRENTSONG.getFrameLength()){
                     //System.out.println("FINISHED");
@@ -147,8 +171,22 @@ public class Playlist extends JFrame {
         }
         s.close();
     }
-    void shuffleSongs(){
-        Collections.shuffle(SONGS);
+    void shuffleAndStart(){
+        ACTIVESONGS.clear();
+        HashSet<String> validset = new HashSet<>();
+        for (JCheckBox jcb : STIMBOXES) if (jcb.isSelected()) validset.add(jcb.getText());
+        // System.out.println(validset);
+        for (Song s : SONGS){
+            if (validset.isEmpty() || validset.contains(s.genre)) ACTIVESONGS.add(s);
+        }
+        Collections.shuffle(ACTIVESONGS);
+        if (CURRENTSONG != null){
+            CURRENTSONG.stop();
+            CURRENTSONG.close();
+        }
+        SONGINDEX = -1;
+        playNextSong();
+        PLAY.setText("PAUSE");
     }
     void updateUI(Song song) throws IOException{
         int TARGET_SIZE = 225;
