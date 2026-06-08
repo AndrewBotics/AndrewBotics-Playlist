@@ -27,7 +27,7 @@ public class Playlist extends JFrame {
     JButton PREVSONG;
     JButton RESHUFFLE;
     JCheckBox[] STIMBOXES;
-    String[] STIMS = new String[]{"Neuro", "Vocaloid", "League"};
+    String[] STIMS;
 
     int IMAGESIZE = 225;
     byte[] TITLEBYTES;
@@ -68,7 +68,7 @@ public class Playlist extends JFrame {
         RESHUFFLE = createButton("RESHUFFLE", 275, 50, 125, BUTTONHEIGHT);
         RESHUFFLE.addActionListener(e -> shuffleAndStart());
 
-        STIMBOXES = createCheckGroup(STIMS, 275, 100);
+        STIMBOXES = createCheckGroup(STIMS, 263, 100);
 
         
         VISPANEL = new VisualizerPanel();
@@ -105,7 +105,7 @@ public class Playlist extends JFrame {
     }
     JCheckBox createCheckBox(String text, int x, int y){
         JCheckBox jcb = new JCheckBox(text);
-        jcb.setBounds(x, y, 100, 30);
+        jcb.setBounds(x, y, 300, 30);
         jcb.setFont(DEFAULTFONT);
         jcb.setForeground(Color.BLACK);
         add(jcb);
@@ -165,9 +165,15 @@ public class Playlist extends JFrame {
     void populateSongs() throws IOException{
         Scanner s = new Scanner(new File("database.in"));
         SONGS = new ArrayList<>();
+        ArrayList<String> stims = new ArrayList<>();
         while (s.hasNextLine()){
             String[] data = s.nextLine().split(",");
             SONGS.add(new Song(data[0], data[1], data[2], data[3]));
+            if (!stims.contains(SONGS.getLast().genre)) stims.add(SONGS.getLast().genre);
+        }
+        STIMS = new String[stims.size()];
+        for (int i = 0; i<stims.size(); i++){
+            STIMS[i] = stims.get(i);
         }
         s.close();
     }
