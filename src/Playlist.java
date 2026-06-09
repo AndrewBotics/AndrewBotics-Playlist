@@ -16,17 +16,22 @@ public class Playlist extends JFrame {
     ArrayList<Song> ACTIVESONGS = new ArrayList<>();
 
     int SONGINDEX = -1;
+    // -6 to halve, +6 to double
+    int SONGVOLUME = 0;
     Clip CURRENTSONG;
     long LASTPOSITION;
 
     JLabel IMAGELABEL;
     JLabel NOWPLAYING;
+    JLabel VOLUMEMETER;
 
     JButton PLAY;
     JButton NEXTSONG;
     JButton PREVSONG;
     JButton RESHUFFLE;
     JCheckBox[] STIMBOXES;
+    JButton DECVOLUME;
+    JButton INCVOLUME;
     String[] STIMS;
 
     int IMAGESIZE = 225;
@@ -56,20 +61,31 @@ public class Playlist extends JFrame {
         add(IMAGELABEL);
         
         int BUTTONHEIGHT = 40;
-        PLAY = createButton("PAUSE", 100, 300, 75, BUTTONHEIGHT);
+        int BUTTONY = 290;
+        PLAY = createButton("PAUSE", 100, BUTTONY, 75, BUTTONHEIGHT);
         PLAY.addActionListener(e -> pausePlay());
 
-        NEXTSONG = createButton(">", 185, 300, 50, BUTTONHEIGHT);
+        NEXTSONG = createButton(">", 185, BUTTONY, 50, BUTTONHEIGHT);
         NEXTSONG.addActionListener(e -> nextSong());
 
-        PREVSONG = createButton("<", 40, 300, 50, BUTTONHEIGHT);
+        PREVSONG = createButton("<", 40, BUTTONY, 50, BUTTONHEIGHT);
         PREVSONG.addActionListener(e -> backSong());
 
-        RESHUFFLE = createButton("RESHUFFLE", 275, 50, 125, BUTTONHEIGHT);
+        RESHUFFLE = createButton("RESHUFFLE", 282, 50, 125, BUTTONHEIGHT);
         RESHUFFLE.addActionListener(e -> shuffleAndStart());
 
         STIMBOXES = createCheckGroup(STIMS, 263, 100);
 
+        DECVOLUME = createButton("-", 268, BUTTONY, 50, BUTTONHEIGHT);
+        DECVOLUME.addActionListener(e -> decreaseVolume());
+
+        INCVOLUME = createButton("+", 368, BUTTONY, 50, BUTTONHEIGHT);
+        INCVOLUME.addActionListener(e -> increaseVolume());
+
+        VOLUMEMETER = new JLabel("0");
+        VOLUMEMETER.setFont(DEFAULTFONT);
+        VOLUMEMETER.setBounds(325, BUTTONY, 50, BUTTONHEIGHT);
+        add(VOLUMEMETER);
         
         VISPANEL = new VisualizerPanel();
         add(VISPANEL);
@@ -108,8 +124,42 @@ public class Playlist extends JFrame {
         jcb.setBounds(x, y, 300, 30);
         jcb.setFont(DEFAULTFONT);
         jcb.setForeground(Color.BLACK);
+        jcb.setFocusPainted(false);
+        jcb.setFocusable(false); 
         add(jcb);
         return jcb;
+    }
+    void populateSongs() throws IOException{
+        Scanner s = new Scanner(new File("database.in"));
+        SONGS = new ArrayList<>();
+        ArrayList<String> stims = new ArrayList<>();
+        while (s.hasNextLine()){
+            String[] data = s.nextLine().split(",");
+            SONGS.add(new Song(data[0], data[1], data[2], data[3]));
+            if (!stims.contains(SONGS.getLast().genre)) stims.add(SONGS.getLast().genre);
+        }
+        STIMS = new String[stims.size()];
+        for (int i = 0; i<stims.size(); i++){
+            STIMS[i] = stims.get(i);
+        }
+        s.close();
+    }
+    void shuffleAndStart(){
+        ACTIVESONGS.clear();
+        HashSet<String> validset = new HashSet<>();
+        for (JCheckBox jcb : STIMBOXES) if (jcb.isSelected()) validset.add(jcb.getText());
+        // System.out.println(validset);
+        for (Song s : SONGS){
+            if (validset.isEmpty() || validset.contains(s.genre)) ACTIVESONGS.add(s);
+        }
+        Collections.shuffle(ACTIVESONGS);
+        if (CURRENTSONG != null){
+            CURRENTSONG.stop();
+            CURRENTSONG.close();
+        }
+        SONGINDEX = -1;
+        playNextSong();
+        PLAY.setText("PAUSE");
     }
     void nextSong(){
         CURRENTSONG.stop();
@@ -144,6 +194,7 @@ public class Playlist extends JFrame {
             CURRENTSONG = ACTIVESONGS.get(SONGINDEX).generateClip();
             setAudioBytes(ACTIVESONGS.get(SONGINDEX));
             CURRENTSONG.start();
+            updateVolume();
             updateUI(ACTIVESONGS.get(SONGINDEX));
             CURRENTSONG.addLineListener(e->{
                 if (e.getType()==LineEvent.Type.STOP && e.getFramePosition()==CURRENTSONG.getFrameLength()){
@@ -162,37 +213,27 @@ public class Playlist extends JFrame {
             e.printStackTrace();
         }
     }
-    void populateSongs() throws IOException{
-        Scanner s = new Scanner(new File("database.in"));
-        SONGS = new ArrayList<>();
-        ArrayList<String> stims = new ArrayList<>();
-        while (s.hasNextLine()){
-            String[] data = s.nextLine().split(",");
-            SONGS.add(new Song(data[0], data[1], data[2], data[3]));
-            if (!stims.contains(SONGS.getLast().genre)) stims.add(SONGS.getLast().genre);
-        }
-        STIMS = new String[stims.size()];
-        for (int i = 0; i<stims.size(); i++){
-            STIMS[i] = stims.get(i);
-        }
-        s.close();
+    void increaseVolume(){
+        SONGVOLUME = Math.min(6, SONGVOLUME+3);
+        updateVolume();
     }
-    void shuffleAndStart(){
-        ACTIVESONGS.clear();
-        HashSet<String> validset = new HashSet<>();
-        for (JCheckBox jcb : STIMBOXES) if (jcb.isSelected()) validset.add(jcb.getText());
-        // System.out.println(validset);
-        for (Song s : SONGS){
-            if (validset.isEmpty() || validset.contains(s.genre)) ACTIVESONGS.add(s);
+    void decreaseVolume(){
+        SONGVOLUME = Math.max(-24, SONGVOLUME-3);
+        updateVolume();
+    }
+    void updateVolume(){
+        if (CURRENTSONG==null) return;
+
+        if (CURRENTSONG.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+            FloatControl gainControl = (FloatControl) CURRENTSONG.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(SONGVOLUME);
+            VOLUMEMETER.setText((SONGVOLUME>0?"+":"")+SONGVOLUME);
+            
+            double val = Math.pow(2, SONGVOLUME/6.0);
+            VOLUMEMETER.setText(String.format("%.2fx", val));
+        } else {
+            System.out.println("Master control is not supported.");
         }
-        Collections.shuffle(ACTIVESONGS);
-        if (CURRENTSONG != null){
-            CURRENTSONG.stop();
-            CURRENTSONG.close();
-        }
-        SONGINDEX = -1;
-        playNextSong();
-        PLAY.setText("PAUSE");
     }
     void updateUI(Song song) throws IOException{
         int TARGET_SIZE = 225;
@@ -212,7 +253,6 @@ public class Playlist extends JFrame {
         repaint();
         revalidate();
     }
-
     public void setAudioBytes(Song song) throws Exception {
         File curr = new File(song.getMediaPath());
         AudioInputStream ais = AudioSystem.getAudioInputStream(curr);
@@ -273,7 +313,7 @@ public class Playlist extends JFrame {
             int width = spacePerBar - 6; 
             
             int currX = margin;
-            int currY = getHeight() - 20; 
+            int currY = getHeight() - 5; 
             
             for (int i=1; i<=totalBars; i++) {
                 double percentage = (double) i / totalBars;

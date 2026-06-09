@@ -1,26 +1,28 @@
-Crazy F*cking Robot Body (Neuro), cfrb-neuro, neuro-default, Neuro
+Crazy F*cking Robot Body (Evil), cfrb-neuro, neuro-default, Neuro
 Chinatown Blues (Neuro & Vedal), chinatown-neuro, INHERIT, Neuro
 Cupid (Neuro), cupid-neuro, neuro-default, Neuro
-Dubidubidu (Neuro), dubidubidu-neuro, neuro-default, Neuro
-Gods (Neuro), gods-neuro, INHERIT, Neuro
+Dubidubidu (Evil), dubidubidu-neuro, neuro-default, Neuro
+Gods (Neuro & Evil), gods-neuro, INHERIT, Neuro
 Life - Acoustic ver. (Neuro), life-acoustic-neuro, neuro-default, Neuro
 Magical Cure Love Shot (Neuro), magical-cure-neuro, INHERIT, Neuro
 Machine Love (Neuro), machine-love-neuro, INHERIT, Neuro
 Mesmerizer (Neuro JP), mesmerizer-neuro, neuro-default, Neuro
-Partners in Crime (Neuro), partners-neuro, INHERIT, Neuro
+Partners in Crime (Neuro & Evil), partners-neuro, INHERIT, Neuro
 Sad Machine x Something Comforting (Neuro), sad-mashup-neuro, INHERIT, Neuro
 Stupid Heart (Neuro), stupid-heart-neuro, neuro-default, Neuro
 Titanium (Neuro), titanium-neuro, neuro-default, Neuro
-Villain (Neuro), villain-neuro, neuro-default, Neuro
-Virus (Neuro), virus-neuro, neuro-default, Neuro
-Voices in My Head (Neuro), voices-neuro, neuro-default, Neuro
-We Don't Talk Anymore (Neuro), dont-talk-neuro, neuro-default, Neuro
+Villain (Evil), villain-neuro, neuro-default, Neuro
+Virus (Evil), virus-neuro, neuro-default, Neuro
+Voices in My Head (Evil), voices-neuro, neuro-default, Neuro
+We Don't Talk Anymore (Neuro & Evil), dont-talk-neuro, neuro-default, Neuro
 world.execute(me) (Neuro), execute-neuro, neuro-default, Neuro
 Mesmerizer (Neuro & Bao), mesmerizer-neuro-bao, INHERIT, Neuro
 Boom, boom, INHERIT, Neuro
 Colorful Array, colorful-array, INHERIT, Neuro
 Life, life, INHERIT, Neuro
 Why Do I (Neuro & Will Stetson), why-do-i-neuro, INHERIT, Neuro
+Never (Neuro & Evil), never, INHERIT, Neuro
+Seishun Complex (Neuro & AnnyTF), seishun-complex-neuro, INHERIT, Neuro
 Birdbrain, birdbrain, INHERIT, Vocaloid
 Cadmium Colors, cadmium-colors, INHERIT, Vocaloid
 Crash the Party, crash-the-party, INHERIT, Vocaloid
@@ -35,6 +37,7 @@ Machine Love, machine-love, INHERIT, Vocaloid
 Magical Girl Autopsy Report, magical-autopsy, INHERIT, Vocaloid
 Magical Cure Love Shot, magical-cure, INHERIT, Vocaloid
 Magical Girl Retirement Toast, magical-retirement, INHERIT, Vocaloid
+Mesmerizer, mesmerizer, INHERIT, Vocaloid
 Minimum Rage, minimum-rage, INHERIT, Vocaloid
 Monitoring (Best Friend ver.), monitoring-bf, INHERIT, Vocaloid
 Overclocked, overclocked, INHERIT, Vocaloid
