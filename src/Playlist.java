@@ -322,6 +322,7 @@ public class Playlist extends JFrame {
                 
                 if (index >= mags.length) index = mags.length-1;
                 
+                if (i>1 && i<8) index++; // If you don't use this line then the 2nd and 3rd lines are the same
                 double mag = mags[index];
                 if (index+1 < mags.length) {
                      mag = (mags[index] + mags[index+1])/2.0;
