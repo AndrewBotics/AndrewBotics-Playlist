@@ -29,9 +29,7 @@ def download_png(youtube_url):
         ydl.download([youtube_url])
 
 video_links = [
-    "https://youtu.be/qsIpeH_eWx8?si=zVnUPGJ9wuwS5sr3",
-    "https://youtu.be/a2awUdeorb8?si=IjG_m6iJmeIbl4Bq",
-    "https://youtu.be/LvYL8u4p-aM?si=Gy7w1Xi6TPMvJUuw",
+    "https://youtu.be/aF4N-qSHbT4?si=Ufo42BD50tMhHxbb"
     ]
 for video in video_links:
     download_wav(video)

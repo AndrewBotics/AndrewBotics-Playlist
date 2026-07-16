@@ -134,7 +134,9 @@ public class Playlist extends JFrame {
         SONGS = new ArrayList<>();
         ArrayList<String> stims = new ArrayList<>();
         while (s.hasNextLine()){
-            String[] data = s.nextLine().split(",");
+            String line = s.nextLine();
+            if (line.startsWith("//")) continue;
+            String[] data = line.split(",");
             SONGS.add(new Song(data[0], data[1], data[2], data[3]));
             if (!stims.contains(SONGS.getLast().genre)) stims.add(SONGS.getLast().genre);
         }
